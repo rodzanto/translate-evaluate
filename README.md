@@ -5,7 +5,7 @@ With this example, you will deploy the resources required in AWS for setting up 
 ## Architecture
 The evaluator will follow this architecture in high-level:
 
-
+![Architecture](./images/arch.png)
 
 where we have:
 1. Text files uploaded to an Amazon S3 bucket, containing the original text (in Spanish) and the correct/reference translation to compare (in Italian)
