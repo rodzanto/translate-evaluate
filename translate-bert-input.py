@@ -1,6 +1,7 @@
 import json
 import logging
 import sys
+import os
 import boto3
 from botocore.exceptions import ClientError
 logger = logging.getLogger(__name__)
@@ -8,7 +9,7 @@ logger = logging.getLogger(__name__)
 s3 = boto3.client('s3')
 sqs = boto3.client('sqs')
 
-def send_message(message_body, message_attributes=None, queue=queue_url):
+def send_message(message_body, message_attributes, queue):
     """
     Send a message to an Amazon SQS queue.
     :param message_body: The body text of the message.
@@ -56,7 +57,7 @@ def lambda_handler(event, context):
             if len(subtext) == 2:
                 message = {"stext":{"DataType":"String","StringValue": subtext[0] },"sref":{"DataType":"String","StringValue": subtext[1] }}
                 print('Sending message:', json.dumps(message))
-                response = send_message(line, message)
+                response = send_message(line, message, queue_url)
                 print('Received:', json.dumps(response))
             else:
                 print('Wrong format for line, expected 2 strings separated by | but received:', json.dumps(subtext))
