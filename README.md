@@ -26,6 +26,8 @@ where we have:
 |Bienvenido a Italia, amigo|Benvenutto a la Italia, amico|Benvenuti in Italia, amico|0.8611|0.8259|0.8431|
 |Hola chico|Ciao ragazzo|Ciao ragazzo.|0.8643|0.8876|0.8758|
 
+where P: Precision, R: Recall, and F1: F1 score.
+
 6. Finally, an Amazon QuickSight dashboard is created for monitoring the BERTscore obtained for the sample texts
 
 ---
