@@ -18,7 +18,12 @@ where we have:
 2. An AWS Lambda function gets automatically triggered for reading the rows in this file, and sending those as messages to an Amazon SQS queue
 3. A container task in Fargate that will be constantly running (until manually stopped) for reading the SQS queue and processing the messages
 4. Each message will be translated with Amazon Translate, and evaluated with BERT Score accordingly
-5. The results of the processing are stored in another location of the Amazon S3 bucket as CSV files
+5. The results of the processing are stored in another location of the Amazon S3 bucket as CSV files, also with "|" separator, including in example:
+| Original text | Reference text | Translated text | BERT score P | BERT score R | BERT score F1 |
+| ------------- | -------------- | --------------- |:------------:|:------------:|:-------------:|
+|Hola|Ciao|Ciao|1.0000|1.0000|1.0000|
+|Bienvenido a Italia, amigo|Benvenutto a la Italia, amico|Benvenuti in Italia, amico|0.8611|0.8259|0.8431|
+|Hola chico|Ciao ragazzo|Ciao ragazzo.|0.8643|0.8876|0.8758|
 6. Finally, an Amazon QuickSight dashboard is created for monitoring the BERTscore obtained for the sample texts
 
 ---
