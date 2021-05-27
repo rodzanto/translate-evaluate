@@ -33,22 +33,28 @@ def receive_message(queue_url):
             print('Processing message (ID: %s, body: %s)' % (msg.message_id, json.dumps(msg.body)))
             mid = msg.message_id
             stext = msg.message_attributes['stext']['StringValue']
-            sref = msg.message_attributes['sref']['StringValue']
+            sref = []
+            sref += [msg.message_attributes['sref']['StringValue']]
 
             # Translate
             translate = boto3.client('translate')
             result = translate.translate_text(Text=stext, SourceLanguageCode=slang, TargetLanguageCode=dlang)
-            cand = result["TranslatedText"]
+            cand = []
+            cand += [result["TranslatedText"]]
 
             # BERTscore
             print(f'BERTscore version: {bert_score.__version__}')
-            #print('Original text: %s, Translated text: %s, Reference text: %s' % (stext, cand, sref))
-            P, R, F1 = score(cands=cand, refs=sref, lang=dlang, model_type='bert-base-multilingual-cased', baseline_path='/srv/worker/model', verbose=False)
+            print('Original text: %s, Translated text: %s, Reference text: %s' % (stext, cand, sref))
+            if (len(cand) == len(sref)):
+                P, R, F1 = score(cands=cand, refs=sref, lang=dlang, model_type='bert-base-multilingual-cased', baseline_path='/srv/worker/model', verbose=False)
+            else:
+                print('Elements mismatch - len cand:', len(cand), 'len sref:', len(sref))
+                continue
             #P = R = F1 = 1
             #print('BERTscores - P: %s, R: %s, F1: %s' % (P, R, F1))
 
             # Output
-            output += [stext+'|'+sref+'|'+cand+'|'+str(P)+'|'+str(R)+'|'+str(F1)]
+            output += [stext+"|"+sref[0]+"|"+cand[0]+"|{:.4f}".format(P.item())+"|{:.4f}".format(R.item())+"|{:.4f}\n".format(F1.item())]
 
             time.sleep(PROCESSING_TIME_SECONDS)
             msg.delete()
