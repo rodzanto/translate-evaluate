@@ -30,7 +30,7 @@ where P: Precision, R: Recall, and F1: F1 score.
 
 6. Finally, an Amazon QuickSight dashboard is created for monitoring the BERTscore obtained for the sample texts. Optionally, you can use Amazon Athena for collecting the output S3 files' information into QuickSight.
 
-![Dashboard](./images/qs-dashboard.png)
+![Dashboard](./images/dashboard-w.png)
 
 ---
 
